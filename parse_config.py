@@ -15,7 +15,7 @@ for section in sections:
     for label in labels:
         if label == 'command':
             continue
-        else if label == 'options':
+        elif label == 'options':
             cmd += ' ' + config.get(section, label)
         else:
             cmd += ' --' + label + '=' + config.get(section, label)
