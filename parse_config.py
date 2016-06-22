@@ -7,13 +7,15 @@ config.read('./default_settings.ini')
 sections = config.sections()
 cmds = []
 for section in sections:
-    cmd = 'mysql '
+    cmd = 'mysql'
     labels = config.options(section) 
     for label in labels:
-        if label == 'options':
-            cmd += config.get(section, label) + ' '
+        if label == 'command':
+            cmd += config.get(section, label)
+        else if label == 'options':
+            cmd += ' ' + config.get(section, label)
         else:
-            cmd += label + '=' + config.get(section, label) + ' '
+            cmd += ' --' + label + '=' + config.get(section, label)
     cmds.append(cmd)
 
 for cmd in cmds:
