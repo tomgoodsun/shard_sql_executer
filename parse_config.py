@@ -7,10 +7,11 @@ config.read('./default_settings.ini')
 sections = config.sections()
 cmds = []
 for section in sections:
-    if config.has_option(section, 'command') is False:
-        raise Exception, 'Options "command" is required.'
-    else:
+    cmd = ''
+    if config.has_option(section, 'command'):
         cmd += config.get(section, 'command')
+    else:
+        raise Exception, 'Options "command" is required.'
     labels = config.options(section) 
     for label in labels:
         if label == 'command':
