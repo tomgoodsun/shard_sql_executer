@@ -7,11 +7,14 @@ config.read('./default_settings.ini')
 sections = config.sections()
 cmds = []
 for section in sections:
-    cmd = 'mysql'
+    if config.has_option(section, 'command') is False:
+        raise Exception, 'Options "command" is required.'
+    else:
+        cmd += config.get(section, 'command')
     labels = config.options(section) 
     for label in labels:
         if label == 'command':
-            cmd += config.get(section, label)
+            continue
         else if label == 'options':
             cmd += ' ' + config.get(section, label)
         else:
