@@ -3,16 +3,20 @@
 import ConfigParser, os, sys, getopt
 
 try:
-    opts, args = getopt.getopt(sys.argv[1:], "c:e:", ["config=", "sql="])
+    opts, args = getopt.getopt(sys.argv[1:], "c:e:f:", ["command=", "exec=", "config="])
 except getopt.GetoptError, err:
     print str(err)
     sys.exit(2)
+
 sql = None
+mysql_command = "mysql"
 config_file = sys.argv[0] + "/default_settings.ini"
 for o, a in opts:
-    if o in ("-e", "--sql"):
+    if o in ("-e", "--exec"):
         sql = a
-    elif o in ("-c", "--config"):
+    elif o in ("-c", "--command"):
+        mysql_command = a
+    elif o in ("-f", "--config"):
         config_file = a
     else:
         raise Exception("error")
@@ -27,11 +31,12 @@ config.read(config_file)
 sections = config.sections()
 cmds = []
 for section in sections:
-    cmd = "mysql "
+    cmd = mysql_command
     labels = config.options(section) 
     for label in labels:
         if label == "options":
-            cmd += " " + config.get(section, label)
+            if mysql_command == "mysql":
+                cmd += " " + config.get(section, label)
         else:
             cmd += " --" + label + "=" + config.get(section, label)
     if sql is not None:
