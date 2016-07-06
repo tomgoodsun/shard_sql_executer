@@ -10,7 +10,7 @@ except getopt.GetoptError, err:
 
 sql = None
 mysql_command = "mysql"
-config_file = sys.argv[0] + "/default_settings.ini"
+config_file = os.getcwd() + "/default_settings.ini"
 for o, a in opts:
     if o in ("-e", "--exec"):
         sql = a

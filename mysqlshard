@@ -1,0 +1,22 @@
+#!/bin/sh
+
+cd `dirname $0`
+ORG_IFS=$IFS
+MOD_IFS="
+"
+IFS=$MOD_IFS
+for mysql_cmd in $(python parse_config.py);
+do
+	#cmd_line=""
+	#for cmd in ${mysql_cmd};
+	#do
+	#	cmd_line=${cmd_line}" "${cmd}
+	#done
+	#`${cmd}`
+	eval $mysql_cmd -e "show tables;"
+	#$mysql_cmd -e "show tables;"
+	IFS=$MOD_IFS
+done
+IFS=$ORG_IFS
+
+# vim: set ft=sh noet ts=4 sts=4 sw=4 :
